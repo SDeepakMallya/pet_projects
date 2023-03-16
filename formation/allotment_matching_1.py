@@ -12,15 +12,18 @@ def bfs(gl, s):
         path = cur_paths.pop(0)
         node = path[-1]
         f = True
+        # print(path, node)
         for n in gl.neighbors(node):
             f = False
             temp = path.copy()
+            # print('in', temp)
             if n not in temp:
                 temp.append(n)
                 cur_paths.append(temp)
-
+                # print(temp, cur_paths)
         if f:
             final_paths.append(path)
+        # print('----')
 
     return final_paths
 
@@ -63,7 +66,7 @@ def allotment_hungarian(source_pts, target_pts, cost = 'sum'):
                 gl.add_edge(s, t)
 
     while True:
-        print('oh yeah!')
+        # print('oh yeah!')
         r_s = [s for s in source_nodes if gl.in_degree(s) == 0]
         r_t = [t for t in target_nodes if gl.out_degree(t) == 0]
         if not len(r_s):
@@ -88,6 +91,9 @@ def allotment_hungarian(source_pts, target_pts, cost = 'sum'):
                         # zn_t.append(path)
         print('s', z_s, r_s)
         print('t', z_t, r_t)
+        if len(z_s) + len(z_t) == 0:
+            print(gl.edges())
+            break
         if len(z_t):
             path = z_t[0]
             for i in range(len(path) - 1):
@@ -114,7 +120,7 @@ def allotment_hungarian(source_pts, target_pts, cost = 'sum'):
 
             for s in source_nodes:
                 for t in target_nodes:
-                    if not (s, t) in gl.edges() or not (t, s) in gl.edges():
+                    if not (s, t) in gl.edges() and not (t, s) in gl.edges():
                         if abs(g.nodes[s]['l'] + g.nodes[t]['l'] - g[s][t]['length']) < 1e-05:
                             gl.add_edge(s, t)
 
